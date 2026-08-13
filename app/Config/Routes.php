@@ -22,6 +22,7 @@ $routes->post('/korlap/login/submit','AuthKorlapController::loginSubmit');
 $routes->get('/logout','Auth::logout');
 
 $routes->get('/layout','Layout');
+$routes->post('/layout/setSidebar','Layout::setSidebar');
 
 $routes->group('korlap', ['filter' => 'korlap_filter'], function($routes) {
 	$routes->get('attendance/input','AttendanceControllerKorlap::input');
