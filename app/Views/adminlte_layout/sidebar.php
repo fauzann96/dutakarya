@@ -21,156 +21,58 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item <?php if(session()->get('active')=='employee'&&session()->get('active_sub')!=''){echo 'menu-open';}?>">
-            <a href="#" class="nav-link <?php if(session()->get('active')=='employee'){echo 'active';}?>">
-              <i class="nav-icon fas fa-user-tie"></i>
-              <p>
-                Data TAD
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('/employee')?>" class="nav-link <?php if(session()->get('active_sub')=='employee_active'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>TAD Aktif</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('/employee/resigned')?>" class="nav-link <?php if(session()->get('active_sub')=='employee_resigned'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>TAD Resign</p>
-                </a>
-              </li>
-            </ul>
+          <?php 
+            foreach($sidebar_items as $item){
+                if($item['type'] == 'nav-header'){
+                    echo '<li class="nav-header">'.$item['text'].'</li>';
+                }else if($item['type'] == 'nav-item'){
+                    $active = '';
+                    if(session()->get('active') == $item['text']){
+                        $active = 'active';
+                    }
+                    echo '<li class="nav-item '.(count($item['child'])>0?'has-treeview':'').' '.(session()->get('active')==$item['text']?'menu-open':'').'">';
+                    echo '<a href="'.$item['link'].'" class="nav-link '.$active.'">';
+                    echo '<i class="nav-icon '.$item['nav-icon'].'"></i>';
+                    echo '<p>'.$item['text'];
+                    if(count($item['child'])>0){
+                        echo '<i class="right fas fa-angle-left"></i>';
+                    }
+                    echo '</p>';
+                    echo '</a>';
+                    if(count($item['child'])>0){
+                        echo '<ul class="nav nav-treeview">';
+                        foreach($item['child'] as $child){
+                            $active_child = '';
+                            if(session()->get('active_sub') == $child['text']){
+                                $active_child = 'active';
+                            }
+                            echo '<li class="nav-item">';
+                            echo '<a href="'.$child['link'].'" class="nav-link '.$active_child.'">';
+                            echo '<i class="far fa-circle nav-icon"></i>';
+                            echo '<p>'.$child['text'].'</p>';
+                            echo '</a>';
+                            echo '</li>';
+                        }
+                        echo '</ul>';
+                    }
+                    echo '</li>';
+                }
+            }
+          ?>
+          <li class="nav-header">PENGATURAN LAYOUT</li>
+          <li class="nav-item"> 
+            <div class="form-group">
+              <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="auto_sidebar" <?php if(session()->get('auto_sidebar') == 1){echo 'checked';}?>>
+                <label class="custom-control-label text-light" for="auto_sidebar">Auto Collapse Sidebar</label>
+              </div>
+            </div>
           </li>
-          <li class="nav-item <?php if(session()->get('active')=='candidate'&&session()->get('active_sub')!=''){echo 'menu-open';}?>">
-            <a href="#" class="nav-link <?php if(session()->get('active')=='candidate'){echo 'active';}?>">
-              <i class="nav-icon fas fa-file"></i>
-              <p>
-                Data Calon TAD
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('/candidate')?>" class="nav-link <?php if(session()->get('active_sub')=='candidate_active'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Calon TAD Aktif</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('/candidate/accepted')?>" class="nav-link <?php if(session()->get('active_sub')=='candidate_accepted'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Calon TAD Diterima</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?php if(session()->get('active')=='payslip'&&session()->get('active_sub')!=''){echo 'menu-open';}?>">
-            <a href="#" class="nav-link <?php if(session()->get('active')=='payslip'){echo 'active';}?>">
-              <i class="nav-icon fas fa-money-bill-wave-alt"></i>
-              <p>
-                Penggajian
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('/payslip')?>" class="nav-link <?php if(session()->get('active_sub')=='payslip_data'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Data Slip Gaji</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?php if(session()->get('active')=='attendance'&&session()->get('active_sub')!=''){echo 'menu-open';}?>">
-            <a href="#" class="nav-link <?php if(session()->get('active')=='attendance'){echo 'active';}?>">
-              <i class="nav-icon fas fa-user-check"></i>
-              <p>
-                Absensi
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('/attendance/input')?>" class="nav-link <?php if(session()->get('active_sub')=='attendance_input'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Input Absensi</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('/attendance/data')?>" class="nav-link <?php if(session()->get('active_sub')=='attendance_data'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Data Absensi</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('/assignment/backup')?>" class="nav-link <?php if(session()->get('active_sub')=='attendance_backup'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Penugasan Backup</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item <?php if(session()->get('active')=='customer'&&session()->get('active_sub')!=''){echo 'menu-open';}?>">
-            <a href="#" class="nav-link <?php if(session()->get('active')=='customer'){echo 'active';}?>">
-              <i class="nav-icon fas fa-hand-holding"></i>
-              <p>
-                Customer
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="<?= base_url('/customer')?>" class="nav-link <?php if(session()->get('active_sub')=='customer_index'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Data Customer</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="<?= base_url('/area')?>" class="nav-link <?php if(session()->get('active_sub')=='area'){echo 'active';}?>">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Area</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="<?= base_url('/user_setting')?>" class="nav-link <?php if(session()->get('active') == 'user_setting'){echo 'active';}?>">
-              <i class="nav-icon fas fa-user"></i></i>
-              <p>
-                Pengaturan User
-              </p>
-            </a>
-          </li> 
-          <li class="nav-item">
-            <a href="<?= base_url('/fc_manager')?>" class="nav-link <?php if(session()->get('active_sub')=='fc_manager'){echo 'active';}?>">
-              <i class="nav-icon fas fa-users"></i></i>
-              <p>
-                Pengaturan User Korlap
-              </p>
-            </a>
-          </li> 
-          <li class="nav-item">
-            <a href="<?= base_url('/calendar_manager')?>" class="nav-link <?php if(session()->get('active_sub')=='calendar_manager'){echo 'active';}?>">
-              <i class="nav-icon fas fa-calendar-alt"></i>
-              <p>
-                Pengaturan Kalender
-              </p>
-            </a>
-          </li> 
-          <!--
-          <li class="nav-item">
-            <a href="<?= base_url('/lock')?>" class="nav-link <?php if(session()->get('active_sub')=='lock'){echo 'active';}?>">
-              <i class="nav-icon fas fa-lock"></i>
-              <p>
-                Kunci Periode
-              </p>
-            </a>
-          </li> -->   
+        </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
     <!-- /.sidebar -->
   </aside>
+
+

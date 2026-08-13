@@ -23,3 +23,27 @@
 <script src="<?= base_url('/plugins/select2/js/select2.full.min.js')?>"></script>
 <!-- Toastr -->
 <script src="<?= base_url('plugins/toastr/toastr.min.js')?>"></script>
+
+  <script>
+    $(document).ready(function(){
+        $('#auto_sidebar').change(function(){
+            var auto_sidebar = $(this).is(':checked') ? 1 : 0;
+            if (auto_sidebar == 1) {
+            console.log('Sidebar Auto Collapse: ON');
+                $('body').addClass('sidebar-collapse');
+            } else {
+                console.log('Sidebar Auto Collapse: OFF');
+                $('body').removeClass('sidebar-collapse');
+            }
+            $.ajax({
+                url: '<?= base_url('layout/setSidebar')?>',
+                type: 'POST',
+                data: {auto_sidebar: auto_sidebar},
+                success: function(response){
+                    console.log(response);
+                    
+                }
+            });
+        });
+    });
+    </script>
