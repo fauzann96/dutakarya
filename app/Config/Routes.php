@@ -21,6 +21,8 @@ $routes->post('/korlap/login/submit','AuthKorlapController::loginSubmit');
 
 $routes->get('/logout','Auth::logout');
 
+$routes->get('/layout','Layout');
+
 $routes->group('korlap', ['filter' => 'korlap_filter'], function($routes) {
 	$routes->get('attendance/input','AttendanceControllerKorlap::input');
 	$routes->post('attendance/check_if_exist','AttendanceControllerKorlap::checkifexist');
