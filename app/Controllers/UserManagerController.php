@@ -11,23 +11,9 @@ class UserManagerController extends BaseController
     public function index(): string
     {
         session()->set(['active_sub'=>'user_manager']);
-        return view('user_manager/user_manager_index');
+        return view('user_manager/index');
     }
-    public function dataTable(){
-        $data = $this->userModel
-        ->select('tb_user.*, type.name as user_type')
-        ->join('tb_user_type type','type.id = user_type_seq','left')
-        ->findAll();
-
-        if($data){
-            $reply['status'] = 1;
-            $reply['data'] = $data;
-        }else{
-            $reply['status'] = 0;
-        }
-        $reply['new_csrf']=csrf_hash();
-        return $this->response->setJSON($reply);
-    }
+  
     public function check_username(){
         $users = $this->userModel->where('username',$this->request->getPost('new_username'))->first();
         $edit_id = $this->request->getPost('edit_id');

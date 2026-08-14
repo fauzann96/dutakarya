@@ -190,7 +190,7 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 
 $routes->group('', ['filter' => 'superadmin_filter'], function($routes) {
 	$routes->get('/user_manager','UserManagerController::index');
-	$routes->post('/user_manager/datatable','UserManagerController::dataTable');
+	$routes->post('/api/user_manager/datatable','ApiUserManager::dataTable');
 	$routes->post('/user_manager/check_username','UserManagerController::check_username');
 	$routes->post('/user_manager/check_employee','UserManagerController::check_employee');
 	$routes->post('/user_manager/new/submit','UserManagerController::newSubmit');
