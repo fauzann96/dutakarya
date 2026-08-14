@@ -70,7 +70,9 @@
                       ${btn_action}
                       <div class="dropdown-divider"></div>
                       <a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit</a>
-                      <a class="dropdown-item" href="#"><i class="fas fa-key"></i> Reset password</a>
+                      <button class="dropdown-item" href="#" onclick="resetPassword(${row.id}, '${row.name}')">
+                        <i class="fas fa-key"></i> Reset password
+                      </button>
                     </div>
                 </div>`;
               return html;

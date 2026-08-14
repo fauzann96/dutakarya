@@ -14,7 +14,7 @@
             success: function(response) {
                 if (response.success) {
                     toastr.success(response.message);
-                    loadTableData();
+                    table.ajax.reload(null, false);
                 } else {
                     toastr.error(response.message);
                 }

@@ -191,12 +191,14 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 $routes->group('', ['filter' => 'superadmin_filter'], function($routes) {
 	$routes->get('/user_manager','UserManagerController::index');
 	$routes->post('/api/user_manager/datatable','ApiUserManager::dataTable');
+	$routes->post('/api/user_manager/change_status','ApiUserManager::changeStatus');
+	$routes->post('/api/user_manager/reset_password','ApiUserManager::resetPassword');
 	$routes->post('/user_manager/check_username','UserManagerController::check_username');
 	$routes->post('/user_manager/check_employee','UserManagerController::check_employee');
 	$routes->post('/user_manager/new/submit','UserManagerController::newSubmit');
 	$routes->get('/user_manager/user_data/(:num)','UserManagerController::userData/$1');
 	$routes->post('/user_manager/edit/submit','UserManagerController::editSubmit');
-	$routes->post('/user_manager/reset_password/submit','UserManagerController::resetPasswordSubmit');
+	
 	$routes->post('/user_manager/toggle_status','UserManagerController::toggleStatus');
 
 	$routes->post('/user_type/option','UserTypeController::option');

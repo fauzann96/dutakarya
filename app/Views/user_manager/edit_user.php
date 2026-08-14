@@ -1,76 +1,49 @@
-<!--pick layout-->
-<?= $this->extend('adminlte_layout/main') ?>
-
-<?= $this->section('page_content') ?>
-
-<div class="row">
-    <div class="col-12">
-
-        <div class="card">
-            <!-- /.card-header -->
-            <div class="card-body">
-                <?=$this->include('user_manager/datatable');?>
+      <div class="modal fade " id="modal-edit">
+        <div class="modal-dialog modal-md">
+          <div class="modal-content text-sm">
+            <form id='form_edit' action=''>
+              <input type="hidden" name="edit_id" id='edit_id'>
+            <div class="modal-header bg-info">
+              <h4 class="modal-title">Edit Pengguna</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <!-- /.card-body -->
+            <div class="modal-body">
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Tipe Pengguna</label>
+                <div class="col-sm-9">
+                  <select id="edit_user_type" name="edit_user_type" class="form-control" style="width: 100%;">
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Username</label>
+                <div class="col-sm-9">
+                  <input id="edit_username" name="edit_username" class="form-control" style="width: 100%;">
+                </div>
+              </div>
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">Nama</label>
+                <div class="col-sm-9">
+                  <input id="edit_name" name="edit_name" class="form-control" style="width: 100%;">
+                </div>
+              </div> 
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+              <button type="submit" class="btn btn-success">Simpan</button>
+            </div>
+            </form>
+          </div>
+          <!-- /.modal-content -->
         </div>
-    <!-- /.card -->
-    </div>
-    <!-- /.col -->
-</div>
-<!-- /.row -->
-
-<?= $this->endSection() ?>
-
-<?= $this->section('page_modal') ?>
-<?=$this->include('user_manager/create_user');?>
-<?=$this->include('user_manager/edit_user');?>
-<?=$this->include('user_manager/reset_password');?>
-<?= $this->endSection() ?>
-
-<?= $this->section('on_document_ready_script') ?>
-
-<?= $this->endSection() ?>
+        <!-- /.modal-dialog -->
+      </div>
 
 <?= $this->section('page_script') ?>
-
-<script>
-  var table;
-  $(function () {
-
-    // body...
-    $.validator.addMethod("uniqueUsername", function (value, element) {
-    let result = false;
-    $.ajax({
-      type: "POST",
-      url: "<?=base_url('user_manager/check_username')?>",
-      dataType: "JSON",
-      data: {
-                '<?=csrf_token()?>':$('#<?=csrf_token()?>').val(),
-                'new_username':value,
-                'edit_id':$('#edit_id').val()
-            },
-      success: function (reply) {
-        $('#<?=csrf_token()?>').val(reply['new_csrf']);
-        if (reply.data === 1) {
-          // console.log(data.data.email + ': This email exists.');
-          result = false;
-        } else {
-          // console.log(data.data.email + ': This email does not exist.');
-          result = true;
-        }
-      },
-      async: false
-    });
-    // console.log(result);
-    return result;
-  });
-  });
-
-
-
-
-
-  $('#form_edit').validate({
+      <script>
+           $('#form_edit').validate({
       rules: {
         edit_user_type: {
           required: true,
@@ -137,8 +110,5 @@
         });
       }
   });
-
-
 </script>
-
 <?= $this->endSection() ?>

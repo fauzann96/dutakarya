@@ -65,64 +65,54 @@ class ApiUserManager extends BaseController
         ]);
     }
 
-        public function datataqbles()
+    public function changeStatus()
     {
         $request = service('request');
+        $id = $request->getPost('id');
+        $status = $request->getPost('status');
 
-        $draw   = $request->getPost('draw');
-        $start  = $request->getPost('start');
-        $length = $request->getPost('length');
-        $search = $request->getPost('search')['value'];
-        $orderColumnIndex = $this->request->getPost('order')[0]['column']; 
-        $orderDir = $this->request->getPost('order')[0]['dir']; 
-        $orderColumnName = $this->request->getPost('columns')[$orderColumnIndex]['name'];
-        
-        $model = model('User');
-        $builder = $model
-            ->select('users.*');
+        $userModel = model('UserModel');
+        $user = $userModel->find($id);
 
-        if (!empty($search)) {
-
-            $builder->groupStart()
-                ->like('users.name', $search)
-                ->orLike('users.email', $search)
-                ->groupEnd();
+        if ($user) {
+            $user['status'] = $status;
+            if ($userModel->save($user)) {
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Status berhasil diubah.',
+                    'token' => csrf_hash()
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Gagal mengubah status.',
+                    'token' => csrf_hash()
+                ]);
+            }
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Pengguna tidak ditemukan.',
+                'token' => csrf_hash()
+            ]);
         }
+    }
 
-        $recordsFiltered = clone $builder;
-
-        $totalFiltered = $builder->countAllResults(false);
-
-        if (!empty($orderColumnName) && $orderColumnName !== 'no') {
-            $builder->orderBy($orderColumnName, $orderDir);
+    public function resetPassword(){
+        $data=[
+        'password' =>password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+        ];
+        $update = $this->userModel->set($data)->where('id',$this->request->getPost('id'))->update();
+        $reply = [];
+        if($update){
+            $reply['status'] = 1;
+            $reply['message'] = 'Password berhasil dirubah';
+        }else{
+            $reply['status'] = 0;
+            $reply['message'] = 'Password gagal dirubah';
         }
-        $records = $builder          
-            ->findAll($length, $start);
-
-        $totalRecords = model('User')->countAll();
-
-        $data = [];
-
-        foreach ($records as $row){
-
-            $data[] = [
-
-                "id" => $row['id'],
-                "name" => $row['name'],
-                "email" => $row['email'],
-                "role" => $row['role'] ?: 'not implemented',
-                "status" => $row['status'] ?: 'ACTIVE',
-
-            ];
-        }
-
-        return $this->response->setJSON([
-
-            "draw" => intval($draw),
-            "recordsTotal" => $totalRecords,
-            "recordsFiltered" => $totalFiltered,
-            "data" => $data,
-            'token' => csrf_hash()
-        ]);
+        // code...
+        $reply['new_csrf']=csrf_hash();
+        return $this->response->setJSON($reply);
     }
 }
