@@ -71,6 +71,14 @@ class SidebarItem
                 ]
             ],
 
+            8 => ['type'=>'nav-item',
+                'text' => 'User Manager',
+                'link'=> base_url('user_manager'),
+                'nav-icon' => 'fas fa-user',
+                'child' => [
+                ]
+            ],
+
         ];
     }
     public function GetSidebarItems()
