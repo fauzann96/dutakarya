@@ -7,6 +7,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('page_script') ?>
+  <?=$this->include('user_manager/change_status');?>
     <script type="text/javascript">
         var table;
         function loadTableData(){
@@ -31,7 +32,6 @@
             },
             "destroy" : true,
             },
-        order: [[2, 'asc']],
         columnDefs: [
             {
               targets: [-1,0,2,3,4], 
@@ -39,7 +39,9 @@
             },
             {
               targets: '_all', 
-              className: 'align-middle'
+              createdCell: function (td) {
+                $(td).addClass('align-middle');
+              }
             },
         ],
         columns: [
@@ -49,49 +51,31 @@
             {data: null, orderable: false,title:'#'},
             {data: 'username', name: 'username', searchable: true, orderable: true, type:'text',title:'Username'},
             {data: 'name', name: 'name', searchable: true, orderable: true, type:'text',title:'Nama'},
-            {data: 'user_type',name: 'user_type_seq',type:'text',title:'Tipe'},
-            { data: "status",name:"status",
+            {data: 'type_name',name: 'type.name',type:'text',title:'Tipe'},
+            {data: "status",name:"status", title:"Status", orderable: false, searchable: false,
             render:function(data,type,row) {
-              var button_data = `data-id="${row['id']}"`;
+              var button_view = `<button type="button" class="btn btn-success btn-sm">Aktif</button>`;
+              var btn_action = `<button class="dropdown-item" id="status" onclick="changeStatus(${row.id}, 0)">Nonaktifkan</button>`;
+              if(data == 0){
+                btn_action = `<button class="dropdown-item" id="status" onclick="changeStatus(${row.id}, 1)">Aktifkan</button>`;
+                button_view = `<button type="button" class="btn btn-danger btn-sm">Nonaktif</button>`;
+              }
               var html = `
-                <div id="statusBtn-${row['id']}" class="dropdown">
-                  <button class="btn btn-sm btn-success dropdown-toggle rounded-pill px-3 shadow-sm d-inline-flex align-items-center gap-2" 
-                          type="button" 
-                          data-bs-toggle="dropdown" 
-                          aria-expanded="false">
-                    <span class="status-label">${data}</span>
-                  </button>
-                  <ul  class="dropdown-menu shadow">
-                    <li><h6 class="dropdown-header">Ubah Status</h6></li>
-                    <li>
-                      <button class="dropdown-item d-flex align-items-center gap-2 btn-change-status" type="button" ${button_data} data-status="Loading">
-                        <span class="badge bg-warning text-dark rounded-circle p-1"></span> Memuat
-                      </button>
-                    </li>
-                    <li>
-                      <button class="dropdown-item d-flex align-items-center gap-2 btn-change-status" type="button" ${button_data} data-status="On The Way">
-                        <span class="badge bg-info rounded-circle p-1"></span> Terkirim
-                      </button>
-                    </li>
-                    <li>
-                      <button class="dropdown-item d-flex align-items-center gap-2 btn-change-status" type="button" ${button_data} data-status="Arrived">
-                        <span class="badge bg-success rounded-circle p-1"></span> Selesai
-                      </button>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                      <button class="dropdown-item d-flex align-items-center gap-2 text-danger" type="button">
-                        <span class="badge bg-danger rounded-circle p-1"></span> Batal
-                      </button>
-                    </li>
-                  </ul>
-                </div>`
+                <div class="btn-group">
+                    ${button_view}
+                    <button type="button" class="btn btn-success btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                      ${btn_action}
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" href="#"><i class="fas fa-edit"></i> Edit</a>
+                      <a class="dropdown-item" href="#"><i class="fas fa-key"></i> Reset password</a>
+                    </div>
+                </div>`;
               return html;
             }
           },
-            {data: null,title:'Action',orderable: false,searchable: false,
-            defaultContent: '<div class="btn-group"><button type="button" id="edit" class="btn btn-info btn-xs"><i class="fas fa-edit"></i> Edit</button><button type="button" id="reset" class="btn btn-warning btn-xs"><i class="fas fa-key"></i> Reset password</button></div>',
-            targets: -1},
         ],
         responsive: true,
         lengthChange: false, 
@@ -113,6 +97,7 @@
                 cell.innerHTML = startNumber + i;
             });
         });
+
         table.on('click', '#edit', function (e) {
         var data = table.row(this).data();
         if(data==null){
