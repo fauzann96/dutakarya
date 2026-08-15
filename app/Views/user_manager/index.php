@@ -36,108 +36,33 @@
 <script>
   var table;
   $(function () {
-
-    // body...
     $.validator.addMethod("uniqueUsername", function (value, element) {
-    let result = false;
-    $.ajax({
-      type: "POST",
-      url: "<?=base_url('user_manager/check_username')?>",
-      dataType: "JSON",
-      data: {
-                '<?=csrf_token()?>':$('#<?=csrf_token()?>').val(),
-                'new_username':value,
-                'edit_id':$('#edit_id').val()
-            },
-      success: function (reply) {
-        $('#<?=csrf_token()?>').val(reply['new_csrf']);
-        if (reply.data === 1) {
-          // console.log(data.data.email + ': This email exists.');
-          result = false;
-        } else {
-          // console.log(data.data.email + ': This email does not exist.');
-          result = true;
-        }
-      },
-      async: false
-    });
-    // console.log(result);
-    return result;
-  });
-  });
-
-
-
-
-
-  $('#form_edit').validate({
-      rules: {
-        edit_user_type: {
-          required: true,
-        },
-        edit_username: {
-          required: true,
-          uniqueUsername: true,
-        },
-        edit_name: {
-          required: true,
-        },
-      },
-      messages: {
-        new_username: {
-          uniqueUsername: "Username sudah digunakan."
-        },
-      },
-      errorElement: 'span',
-      errorPlacement: function (error, element) {
-        error.addClass('invalid-feedback');
-        element.closest('.form-group').append(error);
-      },
-      highlight: function (element, errorClass, validClass) {
-        $(element).addClass('is-invalid');
-      },
-      unhighlight: function (element, errorClass, validClass) {
-        $(element).removeClass('is-invalid');
-        $(element).addClass('is-valid');
-      },
-      submitHandler:function(event){
-        var form_data = new FormData();
-        form_data.append('id',$('#edit_id').val());
-        form_data.append('user_type',$('#edit_user_type').val());
-        form_data.append('username',$('#edit_username').val());
-        form_data.append('name',$('#edit_name').val());
-        form_data.append('<?=csrf_token()?>',$('#<?=csrf_token()?>').val());
-      
-        var request = $.ajax({
-              url: '<?=base_url('/user_manager/edit/submit')?>',
-              type: 'POST',
-              contentType: false,
-              processData: false,  // Important!
-              async: false,
-              cache: false,
-              timeout: 30000,
-              data : form_data,
-              dataType: 'json',
-          });
-        
-        request.done(function( reply ) {
+      let result = false;
+      $.ajax({
+        type: "POST",
+        url: "<?=base_url('/api/user_manager/check_username')?>",
+        dataType: "JSON",
+        data: {
+                  '<?=csrf_token()?>':$('#<?=csrf_token()?>').val(),
+                  'new_username':value,
+                  'edit_id':$('#edit_id').val()
+              },
+        success: function (reply) {
           $('#<?=csrf_token()?>').val(reply['new_csrf']);
-          if(reply['status'] == 1 ){
-            toastr.success('User berhasil diupdate');
-            $('#modal-edit').modal('hide');
-            table.ajax.reload();
-            $("#form_edit")[0].reset();
-          }else{
-            toastr.danger('User gagal diupdate');
+          if (reply.data === 1) {
+            // console.log(data.data.email + ': This email exists.');
+            result = false;
+          } else {
+            // console.log(data.data.email + ': This email does not exist.');
+            result = true;
           }
-        });
-        request.fail(function( jqXHR, textStatus, error ) {
-          var err = eval("(" + jqXHR.responseText + ")");
-          toastr.danger(err.message);
-        });
-      }
+        },
+        async: false
+      });
+      // console.log(result);
+      return result;
+    });
   });
-
 
 </script>
 

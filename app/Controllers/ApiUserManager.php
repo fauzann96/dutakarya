@@ -115,4 +115,82 @@ class ApiUserManager extends BaseController
         $reply['new_csrf']=csrf_hash();
         return $this->response->setJSON($reply);
     }
+
+    public function checkUsername(){
+        $users = $this->userModel->where('username',$this->request->getPost('new_username'))->first();
+        $edit_id = $this->request->getPost('edit_id');
+        if($users){
+            if($users['id'] == $edit_id){
+               $reply['data'] = 0; 
+           }else{
+            $reply['data'] = 1 ;
+            }
+        }else{
+            $reply['data'] = 0;
+        }
+        $reply['new_csrf']=csrf_hash();
+        return $this->response->setJSON($reply);
+    }
+
+    public function newSubmit()
+    {
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'name' => $this->request->getPost('name'),
+            'user_type_seq' => $this->request->getPost('user_type'),
+            'password' =>password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'created_by'=>session()->get('user_id'),
+        ];
+        $insert =  $this->userModel->insert($data);
+
+        $reply = [];
+        if($insert){
+            $reply['status'] = 1;
+            $reply['message'] = 'Pengguna baru berhasil dibuat';
+        }else{
+            $reply['status'] = 0;
+            $reply['message'] = 'Pengguna baru gagal dibuat';
+        }
+        // code...
+        $reply['new_csrf']=csrf_hash();
+        return $this->response->setJSON($reply);
+    }
+
+    public function editSubmit()
+    {
+        $data = [
+            'username' => $this->request->getPost('username'),
+            'name' => $this->request->getPost('name'),
+            'user_type_seq' => $this->request->getPost('user_type'),
+        ];
+        $update =  $this->userModel->set($data)->where('id',$this->request->getPost('id'))->update();
+
+        $reply = [];
+        if($update){
+            $reply['status'] = 1;
+        }else{
+            $reply['status'] = 0;
+        }
+        // code...
+        $reply['new_csrf']=csrf_hash();
+        return $this->response->setJSON($reply);
+    }
+
+    public function userData($id)
+    {
+        $user = $this->userModel->find($id);
+        if ($user) {
+            return $this->response->setJSON([
+                'success' => true,
+                'data' => $user,
+                'token' => csrf_hash()
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Pengguna tidak ditemukan.',
+                'token' => csrf_hash()
+            ]);
+        }
+    }
 }

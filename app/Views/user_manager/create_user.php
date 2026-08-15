@@ -11,9 +11,8 @@
               <div class="modal-body">
                 <div class="form-group row">
                   <label class="col-sm-3 col-form-label">Tipe Pengguna</label>
-                  <div class="col-sm-9">
-                    <select id="new_user_type" name="new_user_type" class="form-control" style="width: 100%;">
-                    </select>
+                  <div class="col-sm-9">s
+                    <?= view_cell('App\Views\user_type\UserTypeCell::Options', ['id' => 'new_user_type', 'name' => 'new_user_type']) ?> 
                   </div>
                 </div>
                 <div class="form-group row">
@@ -56,32 +55,32 @@
 <?= $this->section('page_script') ?>
 
       <script>
-          $('#form_new').validate({
-      rules: {
-        new_user_type: {
-          required: true,
+        $('#form_new').validate({
+        rules: {
+          new_user_type: {
+            required: true,
+          },
+          new_username: {
+            required: true,
+            uniqueUsername: true,
+          },
+          new_name: {
+            required: true,
+          },
+          new_password: {
+            required: true,
+            minlength: 8,
+          },
+          new_password_retype: {
+            required: true,
+            equalTo : new_password,
+          },
         },
-        new_username: {
-          required: true,
-          uniqueUsername: true,
+        messages: {
+          new_username: {
+            uniqueUsername: "Username sudah digunakan."
+          },
         },
-        new_name: {
-          required: true,
-        },
-        new_password: {
-          required: true,
-          minlength: 8,
-        },
-        new_password_retype: {
-          required: true,
-          equalTo : new_password,
-        },
-      },
-      messages: {
-        new_username: {
-          uniqueUsername: "Username sudah digunakan."
-        },
-      },
       errorElement: 'span',
       errorPlacement: function (error, element) {
         error.addClass('invalid-feedback');
@@ -103,7 +102,7 @@
         form_data.append('<?=csrf_token()?>',$('#<?=csrf_token()?>').val());
       
         var request = $.ajax({
-              url: '<?=base_url('/user_manager/new/submit')?>',
+              url: '<?=base_url('/api/user_manager/new/submit')?>',
               type: 'POST',
               contentType: false,
               processData: false,  // Important!

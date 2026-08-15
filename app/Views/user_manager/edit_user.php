@@ -13,8 +13,7 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">Tipe Pengguna</label>
                 <div class="col-sm-9">
-                  <select id="edit_user_type" name="edit_user_type" class="form-control" style="width: 100%;">
-                  </select>
+                  <?= view_cell('App\Views\user_type\UserTypeCell::Options', ['id' => 'edit_user_type', 'name' => 'edit_user_type']) ?> 
                 </div>
               </div>
               <div class="form-group row">
@@ -42,8 +41,29 @@
       </div>
 
 <?= $this->section('page_script') ?>
-      <script>
-           $('#form_edit').validate({
+  <script>
+    function showEditModal(id){
+      // Implementation for showing edit modal
+      // This function should populate the form fields with the user's current data
+      // and then display the modal.
+      // Example:
+      loadUserTypes();
+      $.ajax({
+        url: '<?=base_url('/api/user_manager/user_data/')?>' + id,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          var data = data.data; // Assuming the API returns user data in a 'data' field
+          $('#edit_id').val(data.id);
+          loadUserTypes(data.user_type_seq); // Load user types and set the selected one
+          $('#edit_username').val(data.username);
+          $('#edit_name').val(data.name);
+          $('#modal-edit').modal('show');
+        }
+      });
+    }
+
+    $('#form_edit').validate({
       rules: {
         edit_user_type: {
           required: true,
@@ -82,7 +102,7 @@
         form_data.append('<?=csrf_token()?>',$('#<?=csrf_token()?>').val());
       
         var request = $.ajax({
-              url: '<?=base_url('/user_manager/edit/submit')?>',
+              url: '<?=base_url('/api/user_manager/edit/submit')?>',
               type: 'POST',
               contentType: false,
               processData: false,  // Important!

@@ -193,15 +193,17 @@ $routes->group('', ['filter' => 'superadmin_filter'], function($routes) {
 	$routes->post('/api/user_manager/datatable','ApiUserManager::dataTable');
 	$routes->post('/api/user_manager/change_status','ApiUserManager::changeStatus');
 	$routes->post('/api/user_manager/reset_password','ApiUserManager::resetPassword');
-	$routes->post('/user_manager/check_username','UserManagerController::check_username');
+	$routes->post('/api/user_manager/check_username','ApiUserManager::checkUsername');
+	$routes->post('/api/user_manager/new/submit','ApiUserManager::newSubmit');
+	$routes->post('/api/user_manager/edit/submit','ApiUserManager::editSubmit');
+	$routes->get('/api/user_manager/user_data/(:num)','ApiUserManager::userData/$1');
+	
 	$routes->post('/user_manager/check_employee','UserManagerController::check_employee');
-	$routes->post('/user_manager/new/submit','UserManagerController::newSubmit');
 	$routes->get('/user_manager/user_data/(:num)','UserManagerController::userData/$1');
-	$routes->post('/user_manager/edit/submit','UserManagerController::editSubmit');
 	
 	$routes->post('/user_manager/toggle_status','UserManagerController::toggleStatus');
 
-	$routes->post('/user_type/option','UserTypeController::option');
+	$routes->get('/api/user-type/options','UserTypeController::option');
 });
 
 $routes->group('', ['filter' => 'jquery_filter'], function($routes) {
