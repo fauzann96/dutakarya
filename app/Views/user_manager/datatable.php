@@ -19,6 +19,9 @@
             responsive: true,
             autoWidth: false,
             pageLength: 25,
+            responsive: true,
+            lengthChange: false, 
+            autoWidth: false,
 
             ajax:{
                 url:"<?=base_url('/api/user_manager/datatable')?>",
@@ -81,9 +84,7 @@
                 }
             },
             ],
-            responsive: true,
-            lengthChange: false, 
-            autoWidth: false,
+ 
             buttons: [{
                             text: '<i class="fas fa-plus"></i> Pengguna Baru',
                             className: 'btn-success btn-sm',

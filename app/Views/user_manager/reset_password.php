@@ -21,7 +21,7 @@
                   <div class="col-sm-9">
                     <input type='password' id="reset_password_retype" name="reset_password_retype" class="form-control" style="width: 100%;">
                     </input>
-                  </div>s
+                  </div>
                 </div> 
                 <input type="hidden" id="reset_id" name="reset_id"/>           
                 </div>
@@ -88,14 +88,15 @@
                 if(reply['status'] == 1 ){
                 $('#modal-reset-password').modal('hide');
                 table.ajax.reload();
+                toastr.success('Password berhasil direset');
                 $("#form_reset_password")[0].reset();
                 }else{
-                alert('Password Gagal Direset');
+                toastr.error('Password gagal direset');
                 }
             });
             request.fail(function( jqXHR, textStatus, error ) {
                 var err = eval("(" + jqXHR.responseText + ")");
-                alert(err.message);
+                toastr.error(err.message);
             });
         }
     });

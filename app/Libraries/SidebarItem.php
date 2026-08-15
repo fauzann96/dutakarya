@@ -66,12 +66,24 @@ class SidebarItem
                 'link'=> '#',
                 'nav-icon' => 'fas fa-user',
                 'child' => [
-                    0 => ['text' => 'Data Customer','link'=>base_url('fc_manager')],
-                    1 => ['text' => 'Pengaturan Kalender','link'=>base_url('calendar_manager')],
                 ]
             ],
 
             8 => ['type'=>'nav-item',
+                'text' => 'Pengaturan Korlap',
+                'link'=> base_url('fc_manager'),
+                'nav-icon' => 'fas fa-users',
+                'child' => [    
+                ]
+            ],
+            9 => ['type'=>'nav-item',
+                'text' => 'Pengaturan Kalender',
+                'link'=> base_url('calendar_manager'),
+                'nav-icon' => 'fas fa-calendar-alt',
+                'child' => [    
+                ]
+            ],
+            10 => ['type'=>'nav-item',
                 'text' => 'User Manager',
                 'link'=> base_url('user_manager'),
                 'nav-icon' => 'fas fa-user',

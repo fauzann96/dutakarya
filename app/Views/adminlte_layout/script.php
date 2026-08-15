@@ -27,9 +27,11 @@
 <script>
     var base_url = "<?=base_url()?>";
     $(document).ready(function() {
-        
         <?= $this->renderSection('on_document_ready_script') ?>
     });
+ 
 </script>
+<?=$this->include('adminlte_layout/custom_buttons')?>
+<?=$this->include('adminlte_layout/custom_functions')?>
 
 <?= $this->renderSection('page_script') ?>

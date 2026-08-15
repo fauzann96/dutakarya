@@ -109,114 +109,12 @@
       </div>
       <!-- /.container-fluid -->
       <!-- modal -->
-      <div class="modal fade" id="modal-delete">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header bg-danger">
-              <h4 class="modal-title">Hapus</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id='form_delete' action=''>
-                <input type="hidden" id='delete_id' value="">
-                <div class="modal-body">
-                  <center><h3 id="delete_confirm"></h3></center>
-                </div>
-                <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                  <button type="submit" class="btn btn-danger">Hapus</button>
-                </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
+      
 
 <!-- modal -->
-      <div class="modal fade" id="modal-edit">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header bg-warning">
-              <h4 class="modal-title">Edit</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <form id='form_edit' action=''>
-                <input type="hidden" id='edit_id' value="">
-                <div class="modal-body">
-                  <div class="form-group row">
-                    <label for="edit_name" class="col-sm-4 col-form-label">Nama</label>
-                    <div class="col-sm-8">
-                      <input type="text" class="form-control" id="edit_name" name="edit_name" placeholder="Nama">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="edit_date" class="col-sm-4 col-form-label">Tanggal</label>
-                    <div class="col-sm-8">
-                      <input type="date" class="form-control" id="edit_date" name="edit_date">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="edit_type" class="col-sm-4 col-form-label">Tipe</label>
-                    <div class="col-sm-8">
-                      <select class="form-control" id="edit_type" name="edit_type"></select>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                  <button type="submit" class="btn btn-success">Simpan</button>
-                </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
+     
 
-      <div class="modal fade" id="modal-new">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <form id='form_new' action=''>
-              <div class="modal-header bg-success">
-                <h4 class="modal-title">Libur/Cuti Baru</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="form-group row">
-                  <label for="new_name" class="col-sm-4 col-form-label">Nama</label>
-                  <div class="col-sm-8">
-                    <input type="text" class="form-control" id="new_name" name="new_name" placeholder="Nama">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="new_date" class="col-sm-4 col-form-label">Tanggal</label>
-                  <div class="col-sm-8">
-                    <input type="date" class="form-control" id="new_date" name="new_date">
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="new_type" class="col-sm-4 col-form-label">Tipe</label>
-                  <div class="col-sm-8">
-                    <select class="form-control" id="new_type" name="new_type"></select>
-                  </div>
-                </div>
-              </div>
-              <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                <button type="submit" class="btn btn-success">Simpan</button>
-              </div>
-            </form>
-          </div>
-          <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-      </div>
+      
 <!-- /.modal -->
       <input type="hidden" id="<?= csrf_token() ?>" class="txt_csrfname" name="<?= csrf_token() ?>" value="<?= csrf_hash() ?>" />
     </section>
@@ -367,108 +265,9 @@ $('#form_filter').validate({
     }
   });
 
-$('#form_delete').validate({
-    rules: {
-    },
-    messages: {
-    },
-    errorElement: 'span',
-    errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group div').append(error);
-    },
-    highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid');
-    },
-    unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid');
-    },
-    submitHandler:function(event){
-        var csrfName = '<?=csrf_token()?>';
-        var request = $.ajax({
-            url: '<?=base_url('/calendar_manager/delete/submit')?>',
-            type: 'POST',
-            async: false,
-            cache: false,
-            timeout: 30000,
-            data:{
-              '<?=csrf_token()?>' : $('#<?=csrf_token()?>').val(),
-              id : $('#delete_id').val(),
-            }
-        });
-        request.done(function(reply){
-          $('#<?=csrf_token()?>').val(reply['new_csrf']);
-          if(reply['status'] == 1){
-            $('#modal-delete').modal('hide');
-            table.ajax.reload();
-            toastr.success('Data berhasil dihapus');
-          }else{
-            toastr.error('Data gagal dihapus');
-          }
-        });
-        request.fail(function(){
-          alert('request failed');
-        });
-      }
-});
 
 
-$('#form_new').validate({
-    rules: {
-      new_name: {
-        required: true,
-      },
-      new_date: {
-        required: true,
-      },
-      new_type: {
-        required: true,
-      },
-    },
-    messages: {
-    },
-    errorElement: 'span',
-    errorPlacement: function (error, element) {
-      error.addClass('invalid-feedback');
-      element.closest('.form-group div').append(error);
-    },
-    highlight: function (element, errorClass, validClass) {
-      $(element).addClass('is-invalid');
-    },
-    unhighlight: function (element, errorClass, validClass) {
-      $(element).removeClass('is-invalid');
-    },
-    submitHandler:function(event){
-        var csrfName = '<?=csrf_token()?>';
-        var request = $.ajax({
-            url: '<?=base_url('/calendar_manager/new/submit')?>',
-            type: 'POST',
-            async: false,
-            cache: false,
-            timeout: 30000,
-            data:{
-              '<?=csrf_token()?>' : $('#<?=csrf_token()?>').val(),
-              name : $('#new_name').val(),
-              date : $('#new_date').val(),
-              type : $('#new_type').val(),
-            }
-        });
-        request.done(function(reply){
-          $('#<?=csrf_token()?>').val(reply['new_csrf']);
-          if(reply['status'] == 1){
-            toastr.success('Libur berhasil ditambahkan');
-            $('#modal-new').modal('hide');
-            table.ajax.reload();
-          }else{
-            //$('#username').val(reply['fc_data']['username']);
-            toastr.error('Libur gagal disimpan');
-          }
-        });
-        request.fail(function(){
-          toastr.error('request failed');
-        });
-      }
-});
+
 
 
 $('#form_edit').validate({

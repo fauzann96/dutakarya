@@ -95,7 +95,8 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 	$routes->post('/calendar_manager/delete/submit','CalendarManagerController::deleteSubmit');
 	$routes->post('/calendar_manager/edit/submit','CalendarManagerController::editSubmit');
 	$routes->post('/calendar_manager/new/submit','CalendarManagerController::newSubmit');
-	$routes->post('/calendar_manager/datatable','CalendarManagerController::dataTable');
+	$routes->post('/api/calendar_manager/datatable','ApiCalendarManager::dataTable');
+	$routes->get('/api/calendar_manager/data/(:num)','ApiCalendarManager::data/$1');
 	$routes->post('/calendar_manager/type/option','CalendarManagerController::dayOffTypeOption');
 	
 	$routes->get('candidate','CandidateController');// terpakai
@@ -197,11 +198,8 @@ $routes->group('', ['filter' => 'superadmin_filter'], function($routes) {
 	$routes->post('/api/user_manager/new/submit','ApiUserManager::newSubmit');
 	$routes->post('/api/user_manager/edit/submit','ApiUserManager::editSubmit');
 	$routes->get('/api/user_manager/user_data/(:num)','ApiUserManager::userData/$1');
-	
+
 	$routes->post('/user_manager/check_employee','UserManagerController::check_employee');
-	$routes->get('/user_manager/user_data/(:num)','UserManagerController::userData/$1');
-	
-	$routes->post('/user_manager/toggle_status','UserManagerController::toggleStatus');
 
 	$routes->get('/api/user-type/options','UserTypeController::option');
 });
