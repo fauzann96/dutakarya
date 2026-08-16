@@ -25,7 +25,7 @@
                     <div class="form-group row">
                         <label for="edit_type" class="col-sm-4 col-form-label">Tipe</label>
                         <div class="col-sm-8">
-                        <select class="form-control" id="edit_type" name="edit_type"></select>
+                        <?= view_cell('\App\Views\day_off_type\DoTypeCell::Options', ['id' => 'edit_type', 'name' => 'edit_type']) ?>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                 $('#edit_id').val(reply['id']);
                 $('#edit_name').val(reply['name']);
                 $('#edit_date').val(reply['date']);
-                $('#edit_type').val(reply['type']);
+                loadDoTypes(reply['type']);
                 $('#modal-edit').modal('show');
             });
             request.fail(function(){
@@ -89,7 +89,7 @@
                 submitHandler:function(event){
                     var csrfName = '<?=csrf_token()?>';
                     var request = $.ajax({
-                        url: '<?=base_url('/calendar_manager/edit/submit')?>',
+                        url: '<?=base_url('/api/calendar_manager/update')?>',
                         type: 'POST',
                         async: false,
                         cache: false,

@@ -7,9 +7,10 @@ class FCController extends BaseController
 
     public function index(): string
     {
-        session()->set(['active'=>'fc_manager']);
-        session()->set(['active_sub'=>'fc_manager']);
-        return view('fc_manager/fc_manager_index');
+        session()->set(['title'=>'Pengaturan Korlap']);
+        session()->set(['active'=>'Pengaturan Korlap']);
+        session()->set(['active_sub'=>'Pengaturan Korlap']);
+        return view('fc_manager/index');
     }
 
     public function dataTable(){

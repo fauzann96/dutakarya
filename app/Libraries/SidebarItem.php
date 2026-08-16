@@ -63,7 +63,7 @@ class SidebarItem
 
             7 => ['type'=>'nav-item',
                 'text' => 'Pengaturan User',
-                'link'=> '#',
+                'link'=> base_url('user-setting'),
                 'nav-icon' => 'fas fa-user',
                 'child' => [
                 ]

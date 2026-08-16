@@ -92,13 +92,13 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 	$routes->post('/area/edit/submit','AreaController::editSubmit');//terpakai
 
 	$routes->get('/calendar_manager','CalendarManagerController::index');
-	$routes->post('/calendar_manager/delete/submit','CalendarManagerController::deleteSubmit');
-	$routes->post('/calendar_manager/edit/submit','CalendarManagerController::editSubmit');
+	$routes->post('/api/calendar_manager/delete','ApiCalendarManager::delete');
+	$routes->post('/api/calendar_manager/update','ApiCalendarManager::update');
 	$routes->post('/calendar_manager/new/submit','CalendarManagerController::newSubmit');
 	$routes->post('/api/calendar_manager/datatable','ApiCalendarManager::dataTable');
 	$routes->get('/api/calendar_manager/data/(:num)','ApiCalendarManager::data/$1');
-	$routes->post('/calendar_manager/type/option','CalendarManagerController::dayOffTypeOption');
-	
+	$routes->get('/api/do-type/options','ApiCalendarManager::doTypeOptions');
+
 	$routes->get('candidate','CandidateController');// terpakai
 	$routes->post('/candidate/datatable','CandidateController::dataTable'); //terpakai
 	$routes->post('/candidate/option','CandidateController::option'); //terpakai
@@ -173,13 +173,13 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 	$routes->get('attendance/report/pdf/(:num)/(:segment)/(:segment)','AttendanceExportController::reportPdf/$1/$2/$3');
 
 	$routes->get('/fc_manager','FCController::index');
-	$routes->post('/fc_manager/datatable','FCController::dataTable');
+	$routes->post('/api/field-coordinator/datatable','ApiFieldCoordinator::dataTable');
 	$routes->post('/fc_manager/reset_password','FCController::resetPassword');
 
-	$routes->get('/user_setting','UserSettingController');
-	$routes->post('user_setting/password/submit','UserSettingController::passwordSubmit');//terpakai untuk ganti password
-	$routes->post('/user_setting/profile_edit/submit','UserSettingController::profileEditSubmit');
-	$routes->post('/user_setting/upload_sign','UserSettingController::uploadSignature');
+	$routes->get('/user-setting','UserSettingController');
+	$routes->post('/api/user-setting/change-password','ApiUserSetting::changePassword');//terpakai untuk ganti password
+	$routes->post('/api/user-setting/update','ApiUserSetting::update');
+	$routes->post('/api/user-setting/upload-signature','ApiUserSetting::uploadSignature');
 
 	$routes->get('/lock','LockController');
 	$routes->get('/lock/datatable','LockController::datatable');

@@ -23,8 +23,13 @@
         <!-- /.modal-dialog -->
       </div>
 <?= $this->section('page_script') ?>
-    <script type="text/javascript">
-      $('#form_delete').validate({
+  <script type="text/javascript">
+    function showDeleteModal(id){
+        $('#delete_id').val(id);
+        $('#delete_confirm').html('Apakah anda yakin ingin menghapus data ini?');
+        $('#modal-delete').modal('show');
+    }
+    $('#form_delete').validate({
     rules: {
     },
     messages: {
@@ -43,7 +48,7 @@
     submitHandler:function(event){
         var csrfName = '<?=csrf_token()?>';
         var request = $.ajax({
-            url: '<?=base_url('/calendar_manager/delete/submit')?>',
+            url: '<?=base_url('/api/calendar_manager/delete')?>',
             type: 'POST',
             async: false,
             cache: false,

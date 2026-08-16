@@ -41,9 +41,7 @@
                 type:"post",
                 data: function(d) {
                     d['<?= csrf_token() ?>'] = $('input[name="<?= csrf_token() ?>"]').val();
-                    d['filter_type'] = $('#filter_type').val();
-                    d['filter_input'] = $('#filter_input').val();
-                    d['filter_selection'] = $('#filter_selection').val();
+
                 },
                 dataSrc : function ( json ) {
                         //Make your callback here.

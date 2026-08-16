@@ -76,6 +76,13 @@ class ApiCalendarManager extends BaseController
         $reply['new_csrf']=csrf_hash();
         return $this->response->setJSON($reply);
     }
+    public function doTypeOptions(){
+        $data = model('DayOffTypeModel')->select('id,name')->findAll();
+        $reply['data']=$data;
+        $reply['status'] = 1;
+        $reply['new_csrf']=csrf_hash();
+        return $this->response->setJSON($reply);
+    }
     public function newSubmit(){
         $data = [
             'name' => $this->request->getPost('name'),
@@ -95,7 +102,7 @@ class ApiCalendarManager extends BaseController
         return $this->response->setJSON($reply);
     }
 
-    public function editSubmit(){
+    public function update(){
         $data = [
             'name' => $this->request->getPost('name'),
             'date' => $this->request->getPost('date'),
@@ -111,7 +118,7 @@ class ApiCalendarManager extends BaseController
         $reply['new_csrf']=csrf_hash();
         return $this->response->setJSON($reply);
     }
-    public function deleteSubmit(){
+    public function delete(){
         $delete = $this->calDayOffModel->delete($this->request->getPost('id'));
         if($delete){
             $update = $this->calDayOffModel->set(['deleted_by'=>session()->get('user_id')])->where('id',$this->request->getPost('id'))->update();
