@@ -10,4 +10,7 @@
     function viewButton(){
         return `<button type="button" id="view" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i> Lihat</button>`;
     }
+    function viewButtonHref(url){
+        return `<a href="${url}" class="btn btn-primary btn-xs"><i class="fas fa-eye"></i> Lihat</a>`;
+    }
 </script>

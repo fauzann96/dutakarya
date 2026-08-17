@@ -82,14 +82,15 @@ $routes->group('', ['filter' => 'admin_filter'], function($routes) {
 	$routes->post('/position/edit/submit','PositionController::editSubmit');
 
 	$routes->get('/area','AreaController');
+	$routes->get('/area/(:num)','AreaController::view/$1');
 	$routes->post('/area/option','AreaController::option');
 	$routes->post('/customer/area/datatable','AreaController::datatable');
-	$routes->post('/customer/area/delete','AreaController::delete');
-	$routes->get('/area/datatable','AreaController::dataTable');//terpakai
+	$routes->post('/api/area/delete','ApiArea::delete');
+	$routes->post('/api/area/datatable','ApiArea::dataTable');//terpakai
 	$routes->post('/area/customer/datatable','AreaController::customerDataTable');//terpakai
 	$routes->get('/area/data/(:num)','AreaController::data/$1');//terpakai
-	$routes->post('/area/new/submit','AreaController::newSubmit');//terpakai
-	$routes->post('/area/edit/submit','AreaController::editSubmit');//terpakai
+	$routes->post('/api/area/create','ApiArea::create');//terpakai
+	$routes->post('/api/area/update','ApiArea::update');//terpakai
 
 	$routes->get('/calendar_manager','CalendarManagerController::index');
 	$routes->post('/api/calendar_manager/delete','ApiCalendarManager::delete');

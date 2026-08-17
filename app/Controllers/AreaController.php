@@ -8,41 +8,14 @@ class AreaController extends BaseController
     public $customerModel;
     public function __construct() {
         session()->set(['title'=>'Area']);
-        session()->set(['active'=>'customer']);
+        session()->set(['active'=>'Customer']);
         $this->areaModel = new \App\Models\AreaModel();
         $this->customerModel = new \App\Models\CustomerModel();
     }
     public function index(): string//terpakai
     {
-        session()->set(['active_sub'=>'area']); 
-        return view('/area/area_index_admin');;
-    }
-
-    public function dataTable()//yg bukan internal 
-    {
-        $data = $this->areaModel->find();//yg non editable punya sistem
-        $reply=[];
-        $reply['new_csrf']=csrf_hash();
-        if($data){
-            $reply['data'] = $data;
-            $reply['status'] = 1;
-        }else{
-            $reply['status'] = 0;
-        }
-        $reply['new_csrf']=csrf_hash();
-        return $this->response->setJSON($reply);
-    }
-    public function option($value='')
-    {
-        $data = $this->areaModel->select('id,name')->findAll();
-        $reply['new_csrf']=csrf_hash();
-        if($data){
-            $reply['data'] = $data;
-            $reply['status'] = 1;
-        }else{
-            $reply['status'] = 0;
-        }
-        return $this->response->setJSON($reply);
+        session()->set(['active_sub'=>'Area']); 
+        return view('/area/index');;
     }
     public function view($id)//terpakai
     {
@@ -62,44 +35,23 @@ class AreaController extends BaseController
             return view('area/area_view_admin',$viewdata);
         }// code...
     }
-    public function delete()
+
+    public function option($value='')
     {
-        $delete = $this->areaModel->where('id',$this->request->getPost('id'))->delete();
-        $reply=[];
+        $data = $this->areaModel->select('id,name')->findAll();
         $reply['new_csrf']=csrf_hash();
-        if($delete){
-            $update = $this->areaModel->set(['deleted_by'=>session()->get('user_id')])->where('id',$this->request->getPost('id'))->withDeleted()->update();
+        if($data){
+            $reply['data'] = $data;
             $reply['status'] = 1;
         }else{
             $reply['status'] = 0;
         }
-        $reply['new_csrf']=csrf_hash();
         return $this->response->setJSON($reply);
     }
+    
 
-    public function newSubmit()
-    {
-        $data = [
-            'name' => $this->request->getPost('name'),
-            'description' => $this->request->getPost('desc'),
-            'created_by' => session()->get('user_id'),
-            'is_company_area' => false,
-        ];
 
-        $insert = $this->areaModel->insert($data);
-        $reply = [];
-        $reply['new_csrf']=csrf_hash();
-        if($insert){
-            $reply['status'] = 1;
-            $reply['message'] = 'Area '.$data['name'].' berhasil disimpan';
-        }else{
-            $reply['status'] = 0;
-            $reply['message'] = 'Area '.$data['name'].' gagal disimpan';
-        }
-        $reply['new_csrf']=csrf_hash();
-        return $this->response->setJSON($reply);
-        // code...
-    }
+
 
     public function customerDataTable()//terpakai
     {
